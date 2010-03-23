@@ -10,6 +10,7 @@ namespace Metsys.Bson.Tests
     }
     public class Fatty
     {
+        private IList<int> _setterLessList;
         public int Int{ get; set;}
         public int? Nint{ get; set;}
         public float Float{ get; set;}
@@ -27,6 +28,18 @@ namespace Metsys.Bson.Tests
         public byte[] ByteArray{ get; set;}
         public object[] Array{ get; set;}
         public IList<string> List{ get; set;}
+        public IList<int> SetterLessList
+        {
+            get
+            {
+                if (_setterLessList == null)
+                {
+                    _setterLessList = new List<int>();
+                }
+                return _setterLessList;
+            }
+        }
         public IDictionary<string, object> Dictionary{ get; set;}
+        public Fatty Child{ get; set;}
     }
 }

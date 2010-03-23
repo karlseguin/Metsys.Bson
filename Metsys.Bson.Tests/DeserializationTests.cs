@@ -94,11 +94,19 @@ namespace Metsys.Bson.Tests
         [Fact]
         public void DeserializesADictionary()
         {
-            var dictionary = new Dictionary<string, object> {{"fiRst", 1}, {"second", "tWo"}};
+            var dictionary = new Dictionary<string, object> { { "fiRst", 1 }, { "second", "tWo" } };
             var input = Serializer.Serialize(new { Dictionary = dictionary });
             var o = Deserializer.Deserialize<Fatty>(input);
             Assert.Equal(1, o.Dictionary["fiRst"]);
             Assert.Equal("tWo", o.Dictionary["second"]);
-        }        
+        }
+        [Fact]
+        public void DeserializesToAListWithNoSetter()
+        {
+            var list = new List<int> { 1, 9393 };
+            var input = Serializer.Serialize(new { SetterLessList = list });
+            var o = Deserializer.Deserialize<Fatty>(input);
+            Assert.Equal(list, o.SetterLessList);
+        }         
     }
 }
