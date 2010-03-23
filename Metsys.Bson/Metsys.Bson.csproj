@@ -37,6 +37,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BsonException.cs" />
     <Compile Include="Deserializer.cs" />
     <Compile Include="Helpers\Document.cs" />
     <Compile Include="Helpers\Helper.cs" />

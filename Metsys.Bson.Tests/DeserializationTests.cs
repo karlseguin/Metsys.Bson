@@ -119,7 +119,23 @@ namespace Metsys.Bson.Tests
         public void ThrowsExceptionWhenNoDefaultConstructorExists()
         {
             var input = Serializer.Serialize(new { Key = "the key" });
-            Assert.Throws<MissingMethodException>(() => Deserializer.Deserialize<Impossible>(input));            
+            Assert.Throws<MissingMethodException>(() => Deserializer.Deserialize<Impossible>(input));
+        }
+        [Fact]
+        public void DeserializesUnknownValuesToExpando()
+        {
+            var input = Serializer.Serialize(new { Key = "the key", Another = 4, Final = "four" });
+            var o = Deserializer.Deserialize<Expandotator>(input);
+            Assert.Equal("the key", o.Key);
+            Assert.Equal(4, o.Expando["Another"]);
+            Assert.Equal("four", o.Expando["Final"]);
+            Assert.Equal(2, o.Expando.Count);
+        }
+        [Fact]
+        public void ThrowsExceptionForUnknownPropertyWithoutExpando()
+        {
+            var input = Serializer.Serialize(new { Key = "the key", Another = 4, Final = "four" });
+            Assert.Throws<BsonException>(() => Deserializer.Deserialize<Skinny>(input));                        
         }
     }
 }

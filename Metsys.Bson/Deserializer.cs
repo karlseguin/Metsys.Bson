@@ -172,7 +172,7 @@ namespace Metsys.Bson
                 var propertyType = property != null ? property.Type : _typeMap.ContainsKey(storageType) ? _typeMap[storageType] : typeof(object);
                 if (property == null && typeHelper.Expando == null)
                 {
-                    throw new Exception(string.Format("Deserialization failed: type {0} does not have a property named {1}", type.FullName, name));
+                    throw new BsonException(string.Format("Deserialization failed: type {0} does not have a property named {1}", type.FullName, name));
                 }                
                 if (property != null && property.Setter == null)
                 {
@@ -272,7 +272,7 @@ namespace Metsys.Bson
             {
                 return new Guid(_reader.ReadBytes(length));
             }
-            throw new NotSupportedException("No support for binary type: " + subType);
+            throw new BsonException("No support for binary type: " + subType);
         }
 
         private string ReadName()
@@ -311,7 +311,7 @@ namespace Metsys.Bson
                     Read(8);
                     return (int)_reader.ReadDouble();
                 default:
-                    throw new FormatException("Could not create an int from " + storedType);
+                    throw new BsonException("Could not create an int from " + storedType);
             }
         }
 
@@ -329,7 +329,7 @@ namespace Metsys.Bson
                     Read(8);
                     return (long)_reader.ReadDouble();
                 default:
-                    throw new FormatException("Could not create an int64 from " + storedType);
+                    throw new BsonException("Could not create an int64 from " + storedType);
             }
         }
 

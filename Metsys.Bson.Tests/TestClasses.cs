@@ -58,4 +58,19 @@ namespace Metsys.Bson.Tests
             Key = key;
         }
     }
+    
+    public class Expandotator : IExpando
+    {
+        private IDictionary<string, object> _expando;
+        public string Key{ get; set;}
+        
+        public IDictionary<string, object> Expando
+        {
+            get
+            {
+                if (_expando == null) { _expando = new Dictionary<string, object>(); }
+                return _expando;
+            }
+        }
+    }
 }
