@@ -8,6 +8,7 @@ namespace Metsys.Bson.Tests
     {
         public int? Nint{ get; set;}
     }
+    
     public class Fatty
     {
         private IList<int> _setterLessList;
@@ -41,5 +42,20 @@ namespace Metsys.Bson.Tests
         }
         public IDictionary<string, object> Dictionary{ get; set;}
         public Fatty Child{ get; set;}
+    }
+    
+    public class Private
+    {
+        public string Key{ get; set;}
+        private Private(){}
+    }
+    
+    public class Impossible
+    {
+        public string Key{ get; set;}
+        public Impossible(string key)
+        {
+            Key = key;
+        }
     }
 }

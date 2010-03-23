@@ -108,5 +108,18 @@ namespace Metsys.Bson.Tests
             var o = Deserializer.Deserialize<Fatty>(input);
             Assert.Equal(list, o.SetterLessList);
         }         
+        [Fact]
+        public void DeserializesToAClassWithPrivateConstructor()
+        {
+            var input = Serializer.Serialize(new { Key = "the key" });
+            var o = Deserializer.Deserialize<Private>(input);
+            Assert.Equal("the key", o.Key); 
+        }
+        [Fact]
+        public void ThrowsExceptionWhenNoDefaultConstructorExists()
+        {
+            var input = Serializer.Serialize(new { Key = "the key" });
+            Assert.Throws<MissingMethodException>(() => Deserializer.Deserialize<Impossible>(input));            
+        }
     }
 }
