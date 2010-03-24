@@ -86,9 +86,10 @@ namespace Metsys.Bson
             
             foreach (var property in typeHelper.GetProperties())
             {
+                if (property.Ignored) { continue; }
                 var name = property.Name; 
                 var value = property.Getter(document);
-                if (value == null)
+                if (value == null && property.IgnoredIfNull)
                 {
                     continue;
                 }

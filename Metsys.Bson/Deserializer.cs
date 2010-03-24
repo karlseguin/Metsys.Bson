@@ -184,7 +184,7 @@ namespace Metsys.Bson
                 {
                     ((IDictionary<string, object>)typeHelper.Expando.Getter(instance))[name] = value;
                 }
-                else if (container == null && value != null)
+                else if (container == null && value != null && !property.Ignored)
                 {
                     property.Setter(instance, value);
                 }

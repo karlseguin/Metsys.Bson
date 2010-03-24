@@ -231,10 +231,11 @@ namespace Metsys.Bson.Tests
             Assert.Throws<InvalidCastException>(() => Serializer.Serialize(new { Name = new Dictionary<int, object> { { 1, 1 } } }));
         }
         [Fact]
-        public void SerializesNothingForNulls()
+        public void SerializesNulls()
         {
             var result = Serializer.Serialize(new Skinny{ Nint = null });
-            Assert.Equal(5, BitConverter.ToInt32(result, 0)); //length            
+            Assert.Equal(19, BitConverter.ToInt32(result, 0)); //length 
+            Assert.Equal(10, result[4]); //type          
         }
         
         

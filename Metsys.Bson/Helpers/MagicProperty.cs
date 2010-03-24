@@ -8,26 +8,39 @@ namespace Metsys.Bson
     {
         private readonly PropertyInfo _property;          
         private readonly string _name;
-
-        public MagicProperty(PropertyInfo property, string name)
-        {
-            _property = property;
-            _name = name;            
-            Getter = CreateGetterMethod(property);
-            Setter = CreateSetterMethod(property);
-        }
+        private readonly bool _ignored;
+        public readonly bool _ignoredIfNull;
 
         public Type Type
         {
             get { return _property.PropertyType; }
-        }        
+        }
         public string Name
         {
-            get{ return _name;}
-        }        
+            get { return _name; }
+        }
+        public bool Ignored
+        {
+            get { return _ignored; }
+        }
+        public bool IgnoredIfNull
+        {
+            get { return _ignoredIfNull; }
+        }
+
         public Action<object, object> Setter { get; private set; }
-       
+
         public Func<object, object> Getter { get; private set; }
+        
+        public MagicProperty(PropertyInfo property, string name, bool ignored, bool ignoredIfNull)
+        {
+            _property = property;
+            _name = name;
+            _ignored = ignored;
+            _ignoredIfNull = ignoredIfNull;
+            Getter = CreateGetterMethod(property);
+            Setter = CreateSetterMethod(property);
+        }
                
         private static Action<object, object> CreateSetterMethod(PropertyInfo property)
         {

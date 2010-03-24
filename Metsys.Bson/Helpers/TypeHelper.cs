@@ -96,7 +96,9 @@ namespace Metsys.Bson
                     continue;
                 }
                 var name = _configuration.AliasFor(type, property.Name);
-                magic.Add(name, new MagicProperty(property, name));
+                var ignored = _configuration.IsIgnored(type, property.Name);
+                var ignoredIfNull = _configuration.IsIgnoredIfNull(type, property.Name);
+                magic.Add(name, new MagicProperty(property, name, ignored, ignoredIfNull));
             }
             return magic;
         }
