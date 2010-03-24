@@ -1,2 +1,3 @@
 Metsys.Bson is a .NET library for serializing and deserializing BSON
 
+This was initially built as part of Norm - the C# Driver for MongoDB - http://github.com/atheken/NoRM.
