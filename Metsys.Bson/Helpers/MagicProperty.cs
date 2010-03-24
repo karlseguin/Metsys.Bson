@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Reflection;
+using Metsys.Bson.Configuration;
 
 namespace Metsys.Bson
 {
     internal class MagicProperty
     {
-        private static readonly Type _type = typeof(MagicProperty);        
-        private readonly PropertyInfo _property;        
+        private readonly PropertyInfo _property;          
+        private readonly string _name;
 
-        public MagicProperty(PropertyInfo property)
+        public MagicProperty(PropertyInfo property, string name)
         {
-            _property = property;            
+            _property = property;
+            _name = name;            
             Getter = CreateGetterMethod(property);
             Setter = CreateSetterMethod(property);
         }
@@ -18,27 +20,25 @@ namespace Metsys.Bson
         public Type Type
         {
             get { return _property.PropertyType; }
-        }
-        
+        }        
         public string Name
         {
-            get { return _property.Name; }
-        }
-        
+            get{ return _name;}
+        }        
         public Action<object, object> Setter { get; private set; }
        
         public Func<object, object> Getter { get; private set; }
                
         private static Action<object, object> CreateSetterMethod(PropertyInfo property)
         {
-            var genericHelper = _type.GetMethod("SetterMethod", BindingFlags.Static | BindingFlags.NonPublic);
+            var genericHelper = typeof(MagicProperty).GetMethod("SetterMethod", BindingFlags.Static | BindingFlags.NonPublic);
             var constructedHelper = genericHelper.MakeGenericMethod(property.DeclaringType, property.PropertyType);
             return (Action<object, object>)constructedHelper.Invoke(null, new object[] { property });
         }
                
         private static Func<object, object> CreateGetterMethod(PropertyInfo property)
         {
-            var genericHelper = _type.GetMethod("GetterMethod", BindingFlags.Static | BindingFlags.NonPublic);
+            var genericHelper = typeof(MagicProperty).GetMethod("GetterMethod", BindingFlags.Static | BindingFlags.NonPublic);
             var constructedHelper = genericHelper.MakeGenericMethod(property.DeclaringType, property.PropertyType);
             return (Func<object, object>)constructedHelper.Invoke(null, new object[] { property });
         }

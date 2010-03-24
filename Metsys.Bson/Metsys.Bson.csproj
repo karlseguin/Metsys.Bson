@@ -38,6 +38,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BsonException.cs" />
+    <Compile Include="Configuration\AliasMap.cs" />
+    <Compile Include="Configuration\BsonConfiguration.cs" />
+    <Compile Include="Configuration\ExpressionHelper.cs" />
+    <Compile Include="Configuration\ITypeConfiguration.cs" />
     <Compile Include="Deserializer.cs" />
     <Compile Include="Helpers\Document.cs" />
     <Compile Include="Helpers\Helper.cs" />

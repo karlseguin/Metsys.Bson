@@ -7,6 +7,7 @@ namespace Metsys.Bson.Tests
     public class Skinny
     {
         public int? Nint{ get; set;}
+        public string String{ get; set;}
     }
     
     public class Fatty
