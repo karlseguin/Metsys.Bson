@@ -30,7 +30,7 @@ namespace Metsys.Bson.Configuration
         public ITypeConfiguration<T> Ignore(Expression<Func<T, object>> expression)
         {
             var member = expression.GetMemberExpression();
-            return this.Ignore(member.GetName());
+            return Ignore(member.GetName());
         }
 
         public ITypeConfiguration<T> Ignore(string name)

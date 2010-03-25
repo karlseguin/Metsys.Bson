@@ -130,6 +130,17 @@ namespace Metsys.Bson.Tests
             Assert.Equal(null, o.Nint);
             Assert.Equal("abc", o.String);
         }
+
+        [Fact]
+        public void IgnoresNamedPropertyWhenDeserializing()
+        {
+            BsonConfiguration.ForType<Skinny>(t => t.Ignore("Nint"));
+
+            var result = Serializer.Serialize(new Skinny { Nint = 43, String = "abc" });
+            var o = Deserializer.Deserialize<Skinny>(result);
+            Assert.Equal(null, o.Nint);
+            Assert.Equal("abc", o.String);
+        }
         
         [Fact]
         public void IgnoresMultiplePropertyWhenDeserializing()
