@@ -90,6 +90,22 @@ namespace Metsys.Bson.Tests
             Assert.Equal((byte)'g', result[10]);
             Assert.Equal((byte)0, result[11]);            
         }
+
+        [Fact]
+        public void IgnoresNamedPropertyWhenSerializing()
+        {
+            BsonConfiguration.ForType<Skinny>(t => t.Ignore("Nint"));
+
+            var result = Serializer.Serialize(new Skinny { Nint = 43, String = "abc" });
+            Assert.Equal(21, BitConverter.ToInt32(result, 0));
+            Assert.Equal((byte)'S', result[5]);
+            Assert.Equal((byte)'t', result[6]);
+            Assert.Equal((byte)'r', result[7]);
+            Assert.Equal((byte)'i', result[8]);
+            Assert.Equal((byte)'n', result[9]);
+            Assert.Equal((byte)'g', result[10]);
+            Assert.Equal((byte)0, result[11]);
+        }
         
         [Fact]
         public void IgnoresMultiplePropertyWhenSerializing()

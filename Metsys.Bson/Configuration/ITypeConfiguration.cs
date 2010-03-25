@@ -7,6 +7,7 @@ namespace Metsys.Bson.Configuration
     {
         ITypeConfiguration<T> UseAlias(Expression<Func<T, object>> expression, string alias);
         ITypeConfiguration<T> Ignore(Expression<Func<T, object>> expression);
+        ITypeConfiguration<T> Ignore(string name);
         ITypeConfiguration<T> IgnoreIfNull(Expression<Func<T, object>> expression);
     }
     
@@ -29,7 +30,12 @@ namespace Metsys.Bson.Configuration
         public ITypeConfiguration<T> Ignore(Expression<Func<T, object>> expression)
         {
             var member = expression.GetMemberExpression();
-            _configuration.AddIgnore<T>(member.GetName());
+            return this.Ignore(member.GetName());
+        }
+
+        public ITypeConfiguration<T> Ignore(string name)
+        {
+            _configuration.AddIgnore<T>(name);
             return this;
         }
 
