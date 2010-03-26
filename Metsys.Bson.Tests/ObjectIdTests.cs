@@ -58,5 +58,12 @@ namespace Metsys.Bson.Tests
             Assert.NotEqual(a, b);
             Assert.True(a != b);
         }
+        [Fact]
+        public void ImplicitConversionOfObjectIdToAndFromStringWorks()
+        {
+            var oid = ObjectId.NewObjectId();
+            string str = oid;
+            Assert.Equal(oid, (ObjectId)str);
+        }
     }
 }
