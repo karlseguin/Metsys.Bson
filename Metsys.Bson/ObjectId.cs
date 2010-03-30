@@ -110,5 +110,14 @@ namespace Metsys.Bson
 
             return bytes;
         }
-    }    
+        
+        public static implicit operator string(ObjectId oid)
+        {
+            return oid.ToString();
+        }
+        public static implicit operator ObjectId(string oidString)
+        {
+            return new ObjectId(oidString);
+        }
+    }
 }
