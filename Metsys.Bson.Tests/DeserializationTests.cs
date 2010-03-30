@@ -115,7 +115,15 @@ namespace Metsys.Bson.Tests
             var input = Serializer.Serialize(new { SetterLessList = list });
             var o = Deserializer.Deserialize<Fatty>(input);
             Assert.Equal(list, o.SetterLessList);
-        }         
+        }
+        [Fact]
+        public void DeserializesToAHahsSetWithNoSetter()
+        {
+            var list = new HashSet<int> { 1, 9393 };
+            var input = Serializer.Serialize(new { SetterlessHashSet = list });
+            var o = Deserializer.Deserialize<Fatty>(input);
+            Assert.Equal(list, o.SetterlessHashSet);
+        }                 
         [Fact]
         public void DeserializesToAClassWithPrivateConstructor()
         {

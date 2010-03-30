@@ -9,7 +9,7 @@ namespace Metsys.Bson
         public static BaseWrapper Create(Type type, Type itemType, object existingContainer)
         {            
             var instance = CreateWrapperFromType(existingContainer == null ? type : existingContainer.GetType(), itemType);
-            instance.SetContainer(existingContainer);
+            instance.SetContainer(existingContainer ?? instance.CreateContainer(type, itemType));
             return instance;            
         }
 
@@ -19,24 +19,33 @@ namespace Metsys.Bson
             {
                 return (BaseWrapper)Activator.CreateInstance(typeof(ArrayWrapper<>).MakeGenericType(itemType));
             }
-            
-            foreach(var @interface in type.GetInterfaces())
+
+            var isCollection = false;            
+            var types = new List<Type>(type.GetInterfaces());
+            types.Insert(0, type);            
+            foreach(var @interface in types)
             {
-                var generic = @interface.GetGenericTypeDefinition();
-                if (typeof(IList).IsAssignableFrom(generic))
+                var interfaceType = @interface.IsGenericType ? @interface.GetGenericTypeDefinition() : @interface;
+                if (typeof(IList<>).IsAssignableFrom(interfaceType) || typeof(IList).IsAssignableFrom(interfaceType))
                 {
                     return new ListWrapper();
                 }
-                if (typeof(ICollection<>).IsAssignableFrom(generic))
+                if (typeof(ICollection<>).IsAssignableFrom(interfaceType))
                 {
-                    return (BaseWrapper) Activator.CreateInstance(typeof(CollectionWrapper<>).MakeGenericType(itemType));                    
+                    isCollection = true;
                 }
+            }
+            if (isCollection)
+            {
+                return (BaseWrapper)Activator.CreateInstance(typeof(CollectionWrapper<>).MakeGenericType(itemType));
             }
             throw new BsonException(string.Format("Collection of type {0} cannot be deserialized", type.FullName));
         }
 
         public abstract void Add(object value);
-        protected abstract void SetContainer(object container);      
-        public abstract object Collection{ get; }  
+        public abstract object Collection { get; }
+
+        protected abstract object CreateContainer(Type type, Type itemType);
+        protected abstract void SetContainer(object container);        
     }      
 }

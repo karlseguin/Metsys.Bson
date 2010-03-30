@@ -2,6 +2,8 @@ using System.Collections.Generic;
 
 namespace Metsys.Bson
 {
+    using System;
+
     internal class ArrayWrapper<T> : BaseWrapper
     {
         private readonly List<T> _list = new List<T>();
@@ -9,6 +11,11 @@ namespace Metsys.Bson
         public override void Add(object value)
         {
             _list.Add((T) value);
+        }
+
+        protected override object CreateContainer(Type type, Type itemType)
+        {
+            return null;
         }
 
         protected override void SetContainer(object container)
