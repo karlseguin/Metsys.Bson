@@ -152,6 +152,28 @@ namespace Metsys.Bson.Tests
             Assert.Equal((byte)0, result[36]);      //main document eoo                
         }
         [Fact]
+        public void SerializesAHashSet()
+        {
+            var result = Serializer.Serialize(new { Name = new HashSet<int> { 3, 2, 1 } });
+            Assert.Equal(37, BitConverter.ToInt32(result, 0)); //length
+            Assert.Equal(4, result[4]); //type
+            Assert.Equal(26, BitConverter.ToInt32(result, 10)); //sub document length
+            Assert.Equal(16, result[14]); //1st element type
+            Assert.Equal((byte)'0', result[15]); //1st element name
+            Assert.Equal(0, result[16]); //1st element name eoo
+            Assert.Equal(3, BitConverter.ToInt32(result, 17));
+            Assert.Equal(16, result[21]); //2nd element type
+            Assert.Equal((byte)'1', result[22]); //2nd element name
+            Assert.Equal(0, result[23]); //2nd element name eoo
+            Assert.Equal(2, BitConverter.ToInt32(result, 24));
+            Assert.Equal(16, result[28]); //3rd element type
+            Assert.Equal((byte)'2', result[29]); //3rd element name
+            Assert.Equal(0, result[30]); //3rd element name eoo
+            Assert.Equal(1, BitConverter.ToInt32(result, 31));
+            Assert.Equal((byte)0, result[35]);      //sub document eoo
+            Assert.Equal((byte)0, result[36]);      //main document eoo                
+        }        
+        [Fact]
         public void SeralizesByteArrayAsABinary()
         {
             var result = Serializer.Serialize(new { Name = new byte[]{10, 12}});

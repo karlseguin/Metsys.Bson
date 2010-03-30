@@ -176,8 +176,7 @@ namespace Metsys.Bson
                 }                
                 if (property != null && property.Setter == null)
                 {
-                    var o = property.Getter(instance);
-                    container = o is IList || IsDictionary(propertyType) ? o : null;
+                    container = property.Getter(instance);                    
                 }
                 var value = isNull ? null : DeserializeValue(propertyType, storageType, container);
                 if (property == null)
@@ -203,15 +202,14 @@ namespace Metsys.Bson
                 return ReadDictionary(listType, existingContainer);
             }
 
-            NewDocument(_reader.ReadInt32());
-            var isReadonly = false;
+            NewDocument(_reader.ReadInt32());            
             var itemType = ListHelper.GetListItemType(listType);
-            var isObject = typeof (object) == itemType;
-            var container = existingContainer == null ? ListHelper.CreateContainer(listType, itemType, out isReadonly) : (IList)existingContainer;
+            var isObject = typeof(object) == itemType;
+            var wrapper = BaseWrapper.Create(listType, itemType, existingContainer);
+                      
             while (!IsDone())
             {
                 var storageType = ReadType();
-
                 ReadName();
                 if (storageType == Types.Object)
                 {
@@ -219,19 +217,11 @@ namespace Metsys.Bson
                 }
                 var specificItemType = isObject ? _typeMap[storageType] : itemType;
                 var value = DeserializeValue(specificItemType, storageType);
-                container.Add(value);
+                wrapper.Add(value);
             }
-            if (listType.IsArray)
-            {
-                return ListHelper.ToArray((List<object>)container, itemType);
-            }
-            if (isReadonly)
-            {
-                return listType.GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, new[] { container.GetType() }, null).Invoke(new object[] { container });
-            }
-            return container;
+            return wrapper.Collection;
         }
-
+        
         private static bool IsDictionary(Type type)
         {
             return type.IsGenericType && typeof(IDictionary<,>).IsAssignableFrom(type.GetGenericTypeDefinition());

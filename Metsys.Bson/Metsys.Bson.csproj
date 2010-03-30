@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -44,7 +44,11 @@
     <Compile Include="Deserializer.cs" />
     <Compile Include="Helpers\Document.cs" />
     <Compile Include="Helpers\Helper.cs" />
-    <Compile Include="Helpers\ListHelper.cs" />
+    <Compile Include="Helpers\Lists\ArrayWrapper.cs" />
+    <Compile Include="Helpers\Lists\CollectionWrapper.cs" />
+    <Compile Include="Helpers\Lists\ListWrapper.cs" />
+    <Compile Include="Helpers\Lists\ListHelper.cs" />
+    <Compile Include="Helpers\Lists\BaseWrapper.cs" />
     <Compile Include="Helpers\MagicProperty.cs" />
     <Compile Include="IExpando.cs" />
     <Compile Include="ObjectId.cs" />

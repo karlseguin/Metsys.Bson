@@ -92,6 +92,14 @@ namespace Metsys.Bson.Tests
             Assert.Equal(list, o.List);
         }
         [Fact]
+        public void DeserializesAHashSet()
+        {
+            var list = new HashSet<string> { "a", "ouch" };
+            var input = Serializer.Serialize(new { HashSet = list });
+            var o = Deserializer.Deserialize<Fatty>(input);
+            Assert.Equal(list, o.HashSet);             
+        }           
+        [Fact]
         public void DeserializesADictionary()
         {
             var dictionary = new Dictionary<string, object> { { "fiRst", 1 }, { "second", "tWo" } };
@@ -137,5 +145,6 @@ namespace Metsys.Bson.Tests
             var input = Serializer.Serialize(new { Key = "the key", Another = 4, Final = "four" });
             Assert.Throws<BsonException>(() => Deserializer.Deserialize<Skinny>(input));                        
         }
+        
     }
 }

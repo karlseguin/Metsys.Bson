@@ -12,6 +12,14 @@ namespace Metsys.Bson.Tests
     
     public class Fatty
     {
+        private HashSet<string> _hashSet;
+        private IList<string> _list;
+        
+        public Fatty()
+        {
+            _list = new List<string>();
+        }
+
         private IList<int> _setterLessList;
         public int Int{ get; set;}
         public int? Nint{ get; set;}
@@ -29,7 +37,21 @@ namespace Metsys.Bson.Tests
         public DateTime? NdateTime{ get; set;}
         public byte[] ByteArray{ get; set;}
         public object[] Array{ get; set;}
-        public IList<string> List{ get; set;}
+        public IList<string> List
+        {
+            get { return _list; }
+        }
+        public HashSet<string> HashSet
+        { 
+            get
+            {
+                if (_hashSet == null)
+                {
+                    _hashSet = new HashSet<string>();
+                }
+                return _hashSet;
+            }
+        }
         public IList<int> SetterLessList
         {
             get
@@ -42,7 +64,7 @@ namespace Metsys.Bson.Tests
             }
         }
         public IDictionary<string, object> Dictionary{ get; set;}
-        public Fatty Child{ get; set;}
+        public Fatty Child{ get; set;}        
     }
     
     public class Private
