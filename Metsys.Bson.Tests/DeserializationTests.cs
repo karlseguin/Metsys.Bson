@@ -98,7 +98,16 @@ namespace Metsys.Bson.Tests
             var input = Serializer.Serialize(new { HashSet = list });
             var o = Deserializer.Deserialize<Fatty>(input);
             Assert.Equal(list, o.HashSet);             
-        }           
+        }
+        [Fact]
+        public void DeserializesAnIDictionary()
+        {
+            var dictionary = new Dictionary<string, object> { { "fiRst", 1 }, { "second", "tWo" } };
+            var input = Serializer.Serialize(new { IDictionary = dictionary });
+            var o = Deserializer.Deserialize<Fatty>(input);
+            Assert.Equal(1, o.IDictionary["fiRst"]);
+            Assert.Equal("tWo", o.IDictionary["second"]);
+        }
         [Fact]
         public void DeserializesADictionary()
         {
@@ -123,7 +132,16 @@ namespace Metsys.Bson.Tests
             var input = Serializer.Serialize(new { SetterlessHashSet = list });
             var o = Deserializer.Deserialize<Fatty>(input);
             Assert.Equal(list, o.SetterlessHashSet);
-        }                 
+        }
+        [Fact]
+        public void DeserializesAnIDictionaryWithNoSetter()
+        {
+            var dictionary = new Dictionary<string, object> { { "fiRst", 1 }, { "second", 2 } };
+            var input = Serializer.Serialize(new { SetterLessIDictionary = dictionary });
+            var o = Deserializer.Deserialize<Fatty>(input);
+            Assert.Equal(1, o.SetterLessIDictionary["fiRst"]);
+            Assert.Equal(2, o.SetterLessIDictionary["second"]);
+        }
         [Fact]
         public void DeserializesToAClassWithPrivateConstructor()
         {

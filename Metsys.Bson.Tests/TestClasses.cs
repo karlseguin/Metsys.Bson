@@ -14,6 +14,7 @@ namespace Metsys.Bson.Tests
     {
         private HashSet<int> _setterLesshashSet;
         private IList<int> _setterLessList;
+        private IDictionary<string, int> _setterLessIDictionary;
                
         public int Int{ get; set;}
         public int? Nint{ get; set;}
@@ -56,7 +57,20 @@ namespace Metsys.Bson.Tests
                 return _setterLesshashSet;
             }
         }
-        public IDictionary<string, object> Dictionary{ get; set;}
+        public Dictionary<string, object> Dictionary{ get; set;}
+        public IDictionary<string, object> IDictionary{ get; set;}
+        public IDictionary<string, int> SetterLessIDictionary
+        {
+            get
+            {
+                if (_setterLessIDictionary == null)
+                {
+                    _setterLessIDictionary = new Dictionary<string, int>();
+                }
+                return _setterLessIDictionary;
+            }
+        }
+        
         public Fatty Child{ get; set;}        
     }
     
