@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Metsys.Bson
 {
@@ -20,17 +21,16 @@ namespace Metsys.Bson
                 return (BaseWrapper)Activator.CreateInstance(typeof(ArrayWrapper<>).MakeGenericType(itemType));
             }
 
-            var isCollection = false;            
-            var types = new List<Type>(type.GetInterfaces());
-            types.Insert(0, type);            
+            var isCollection = false;
+            var types = new List<Type>(type.GetInterfaces().Select(h => h.IsGenericType ? h.GetGenericTypeDefinition() : h));
+            types.Insert(0, type.IsGenericType ? type.GetGenericTypeDefinition() : type);              
             foreach(var @interface in types)
             {
-                var interfaceType = @interface.IsGenericType ? @interface.GetGenericTypeDefinition() : @interface;
-                if (typeof(IList<>).IsAssignableFrom(interfaceType) || typeof(IList).IsAssignableFrom(interfaceType))
+                if (typeof(IList<>).IsAssignableFrom(@interface) || typeof(IList).IsAssignableFrom(@interface))
                 {
                     return new ListWrapper();
                 }
-                if (typeof(ICollection<>).IsAssignableFrom(interfaceType))
+                if (typeof(ICollection<>).IsAssignableFrom(@interface))
                 {
                     isCollection = true;
                 }
@@ -38,6 +38,15 @@ namespace Metsys.Bson
             if (isCollection)
             {
                 return (BaseWrapper)Activator.CreateInstance(typeof(CollectionWrapper<>).MakeGenericType(itemType));
+            }
+
+            //a last-ditch pass
+            foreach (var @interface in types)
+            {
+                if (typeof(IEnumerable<>).IsAssignableFrom(@interface) || typeof(IEnumerable).IsAssignableFrom(@interface))
+                {
+                    return new ListWrapper();
+                }
             }
             throw new BsonException(string.Format("Collection of type {0} cannot be deserialized", type.FullName));
         }

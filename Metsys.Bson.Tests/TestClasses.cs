@@ -103,4 +103,9 @@ namespace Metsys.Bson.Tests
             }
         }
     }
+
+    public class SpecialEnumerable
+    {
+        internal IEnumerable<Skinny> AnIEnumerable { get; set; }
+    }
 }

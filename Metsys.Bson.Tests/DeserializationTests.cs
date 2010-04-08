@@ -1,3 +1,4 @@
+using System.Linq;
 using Xunit;
 using System;
 using System.Text.RegularExpressions;
@@ -171,6 +172,15 @@ namespace Metsys.Bson.Tests
             var input = Serializer.Serialize(new { Key = "the key", Another = 4, Final = "four" });
             Assert.Throws<BsonException>(() => Deserializer.Deserialize<Skinny>(input));                        
         }
+
+        [Fact]
+        public void SerializationOfIEnumerableTIsNotLossy()
+        {
+            var gto = new SpecialEnumerable { AnIEnumerable = new List<Skinny> { new Skinny(), new Skinny() } };
+            var input = Serializer.Serialize(gto);
+            var o = Deserializer.Deserialize<SpecialEnumerable>(input);
+            Assert.Equal(2, o.AnIEnumerable.Count());
+        }  
         
     }
 }
