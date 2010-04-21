@@ -113,7 +113,7 @@ namespace Metsys.Bson
         
         public static implicit operator string(ObjectId oid)
         {
-            return oid.ToString();
+			return oid == null ? null : oid.ToString();
         }
         public static implicit operator ObjectId(string oidString)
         {

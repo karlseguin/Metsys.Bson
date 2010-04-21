@@ -65,5 +65,12 @@ namespace Metsys.Bson.Tests
             string str = oid;
             Assert.Equal(oid, (ObjectId)str);
         }
+        
+        [Fact]
+        public void ConversionToStringWithNullObjIsNull()
+        {
+            var obj = new { Id = (ObjectId)null };            
+            Assert.Equal(null, obj.Id);
+        }
     }
 }
