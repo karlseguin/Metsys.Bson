@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using Metsys.Bson.Configuration;
 
 namespace Metsys.Bson
 {

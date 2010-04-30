@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="ConfigurationTests.cs" />
     <Compile Include="DeserializationTests.cs" />
+    <Compile Include="FailTests.cs" />
     <Compile Include="TestClasses.cs" />
     <Compile Include="ObjectIdTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
