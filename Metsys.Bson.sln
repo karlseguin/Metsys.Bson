@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metsys.Bson", "Metsys.Bson\Metsys.Bson.csproj", "{AAEAF279-5E52-4F0C-8765-497C0259D984}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metsys.Bson.Tests", "Metsys.Bson.Tests\Metsys.Bson.Tests.csproj", "{EAB26123-53C0-414A-92DF-B84A27A5E50A}"
