@@ -31,6 +31,11 @@ namespace Metsys.Bson
 
         public static byte[] Serialize<T>(T document)
         {
+            var type = document.GetType();
+            if (type.IsValueType || typeof(IEnumerable).IsAssignableFrom(type))
+            {
+               throw new BsonException("Root type must be an non-enumerable object");
+            }
             using (var ms = new MemoryStream(250))
             using (var writer = new BinaryWriter(ms))
             {
@@ -82,8 +87,7 @@ namespace Metsys.Bson
  
         private void WriteObject(object document)
         {
-            var typeHelper = TypeHelper.GetHelperForType(document.GetType());            
-            
+            var typeHelper = TypeHelper.GetHelperForType(document.GetType());
             foreach (var property in typeHelper.GetProperties())
             {
                 if (property.Ignored) { continue; }

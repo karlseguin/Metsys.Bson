@@ -258,6 +258,14 @@ namespace Metsys.Bson.Tests
             var result = Serializer.Serialize(new Skinny{ Nint = null });
             Assert.Equal(19, BitConverter.ToInt32(result, 0)); //length 
             Assert.Equal(10, result[4]); //type          
-        }             
+        }
+       
+        [Fact]
+        public void ThrowsExceptionOnInvalidRootTypes()
+        {
+           var message = "Root type must be an non-enumerable object";
+           Assert.Equal(message, Assert.Throws<BsonException>(() => Serializer.Serialize(3)).Message);
+           Assert.Equal(message, Assert.Throws<BsonException>(() => Serializer.Serialize(new[]{1,2,3})).Message);
+        }
     }
 }

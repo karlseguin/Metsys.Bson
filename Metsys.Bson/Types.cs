@@ -19,6 +19,6 @@ namespace Metsys.Bson
         ScopedCode = 15,
         Int32 = 16,
         Timestamp = 17,
-        Int64 = 18,        
+        Int64 = 18,
     }
 }
