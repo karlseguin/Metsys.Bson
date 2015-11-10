@@ -19,6 +19,7 @@ namespace Metsys.Bson.Tests
 				{ "double", 123.45d },
 				{ "array", new List<object>{ 1, 2, 3 } },
 				{ "object", new Dictionary<string, object> { { "hello", "world" } } },
+				{ "null", null },
 			};
 
 			var serialized = Serializer.Serialize( dico );

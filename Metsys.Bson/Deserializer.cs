@@ -28,6 +28,7 @@ namespace Metsys.Bson
 			{Types.ObjectId, typeof(ObjectId)},
 			{Types.Array, typeof(List<object>)},
 			{Types.Object, typeof(Dictionary<string, object>)},
+			{Types.Null, null},
         };
         private readonly BinaryReader _reader;
         private Document _current;
