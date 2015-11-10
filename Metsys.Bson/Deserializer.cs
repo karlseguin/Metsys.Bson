@@ -12,9 +12,17 @@ namespace Metsys.Bson
     {        
         private readonly static IDictionary<Types, Type> _typeMap = new Dictionary<Types, Type>
         {
-             {Types.Int32, typeof(int)}, {Types.Int64, typeof (long)}, {Types.Boolean, typeof (bool)}, {Types.String, typeof (string)},
-             {Types.Double, typeof(double)}, {Types.Binary, typeof (byte[])}, {Types.Regex, typeof (Regex)}, {Types.DateTime, typeof (DateTime)},
-             {Types.ObjectId, typeof(ObjectId)}
+			{Types.Int32, typeof(int)},
+			{Types.Int64, typeof (long)},
+			{Types.Boolean, typeof (bool)},
+			{Types.String, typeof (string)},
+			{Types.Double, typeof(double)},
+			{Types.Binary, typeof (byte[])},
+			{Types.Regex, typeof (Regex)},
+			{Types.DateTime, typeof (DateTime)},
+			{Types.ObjectId, typeof(ObjectId)},
+			{Types.Array, typeof(List<object>)},
+			{Types.Object, typeof(Dictionary<string, object>)},
         };
         private readonly BinaryReader _reader;
         private Document _current;

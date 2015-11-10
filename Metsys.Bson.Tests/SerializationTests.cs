@@ -263,7 +263,7 @@ namespace Metsys.Bson.Tests
         [Test]
         public void ThrowsExceptionOnInvalidRootTypes()
         {
-           var message = "Root type must be an non-enumerable object";
+           var message = "Root type must be an object";
            Assert.AreEqual(message, Assert.Throws<BsonException>(() => Serializer.Serialize(3)).Message);
            Assert.AreEqual(message, Assert.Throws<BsonException>(() => Serializer.Serialize(new[]{1,2,3})).Message);
         }
