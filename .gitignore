@@ -16,3 +16,4 @@ Tests.VisualState.xml
 .svn
 _ReSharper*
 .DS_Store
+/packages/

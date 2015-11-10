@@ -1,10 +1,10 @@
-using Xunit;
+using NUnit.Framework;
 
 namespace Metsys.Bson.Tests
 {
     public class FailTests
     {
-        [Fact]
+        [Test]
         //problem seems related to Child.Name not actually overriding Parent.Name as far as GetProperties is concerned
         public void ItWouldBeGreatIfThisTestDidNotFail()
         {

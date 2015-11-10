@@ -1,4 +1,4 @@
-using Xunit;
+using NUnit.Framework;
 using Metsys.Bson.Configuration;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ namespace Metsys.Bson.Tests
 {
     public class ConfigurationTests : IDisposable
     {        
-        [Fact]
+		[Test]
         public void UsesAliasWhenSerializing()
         {
             BsonConfiguration.ForType<Skinny>(t =>
@@ -18,36 +18,36 @@ namespace Metsys.Bson.Tests
             });
 
             var result = Serializer.Serialize(new Skinny { Nint = 43, String = "abc" });
-            Assert.Equal((byte)'i', result[5]);
-            Assert.Equal((byte)'d', result[6]);
-            Assert.Equal((byte)0, result[7]);
+            Assert.AreEqual((byte)'i', result[5]);
+            Assert.AreEqual((byte)'d', result[6]);
+            Assert.AreEqual((byte)0, result[7]);
 
-            Assert.Equal((byte)'s', result[13]);
-            Assert.Equal((byte)'t', result[14]);
-            Assert.Equal((byte)'r', result[15]);
-            Assert.Equal((byte)0, result[16]);
+            Assert.AreEqual((byte)'s', result[13]);
+            Assert.AreEqual((byte)'t', result[14]);
+            Assert.AreEqual((byte)'r', result[15]);
+            Assert.AreEqual((byte)0, result[16]);
         }
 
-        [Fact]
+        [Test]
         public void MixesAliasAndNormalNameWhenSerializing()
         {
             BsonConfiguration.ForType<Skinny>(t => t.UseAlias(p => p.Nint, "id"));
 
             var result = Serializer.Serialize(new Skinny { Nint = 43, String = "abc" });
-            Assert.Equal((byte)'i', result[5]);
-            Assert.Equal((byte)'d', result[6]);
-            Assert.Equal((byte)0, result[7]);
+            Assert.AreEqual((byte)'i', result[5]);
+            Assert.AreEqual((byte)'d', result[6]);
+            Assert.AreEqual((byte)0, result[7]);
 
-            Assert.Equal((byte)'S', result[13]);
-            Assert.Equal((byte)'t', result[14]);
-            Assert.Equal((byte)'r', result[15]);
-            Assert.Equal((byte)'i', result[16]);
-            Assert.Equal((byte)'n', result[17]);
-            Assert.Equal((byte)'g', result[18]);
-            Assert.Equal((byte)0, result[19]);
+            Assert.AreEqual((byte)'S', result[13]);
+            Assert.AreEqual((byte)'t', result[14]);
+            Assert.AreEqual((byte)'r', result[15]);
+            Assert.AreEqual((byte)'i', result[16]);
+            Assert.AreEqual((byte)'n', result[17]);
+            Assert.AreEqual((byte)'g', result[18]);
+            Assert.AreEqual((byte)0, result[19]);
         }
         
-        [Fact]
+        [Test]
         public void UsesAliasWhenDeserializing()
         {
             BsonConfiguration.ForType<Skinny>(t =>
@@ -59,11 +59,11 @@ namespace Metsys.Bson.Tests
             var result = Serializer.Serialize(new { id = 43, str = "abc" });
             var o = Deserializer.Deserialize<Skinny>(result);
 
-            Assert.Equal(43, o.Nint);
-            Assert.Equal("abc", o.String);           
+            Assert.AreEqual(43, o.Nint);
+            Assert.AreEqual("abc", o.String);           
         }
 
-        [Fact]
+        [Test]
         public void MixesAliasAndNormalNameWhenDeserializing()
         {
             BsonConfiguration.ForType<Skinny>(t => t.UseAlias(p => p.Nint, "id"));
@@ -71,43 +71,43 @@ namespace Metsys.Bson.Tests
             var result = Serializer.Serialize(new { id = 43, String = "abc" });
             var o = Deserializer.Deserialize<Skinny>(result);
 
-            Assert.Equal(43, o.Nint);
-            Assert.Equal("abc", o.String);  
+            Assert.AreEqual(43, o.Nint);
+            Assert.AreEqual("abc", o.String);  
         }
 
-        [Fact]
+        [Test]
         public void IgnoresPropertyWhenSerializing()
         {
             BsonConfiguration.ForType<Skinny>(t => t.Ignore(p => p.Nint));
 
             var result = Serializer.Serialize(new Skinny { Nint = 43, String = "abc" });
-            Assert.Equal(21, BitConverter.ToInt32(result, 0));
-            Assert.Equal((byte)'S', result[5]);
-            Assert.Equal((byte)'t', result[6]);
-            Assert.Equal((byte)'r', result[7]);
-            Assert.Equal((byte)'i', result[8]);
-            Assert.Equal((byte)'n', result[9]);
-            Assert.Equal((byte)'g', result[10]);
-            Assert.Equal((byte)0, result[11]);            
+            Assert.AreEqual(21, BitConverter.ToInt32(result, 0));
+            Assert.AreEqual((byte)'S', result[5]);
+            Assert.AreEqual((byte)'t', result[6]);
+            Assert.AreEqual((byte)'r', result[7]);
+            Assert.AreEqual((byte)'i', result[8]);
+            Assert.AreEqual((byte)'n', result[9]);
+            Assert.AreEqual((byte)'g', result[10]);
+            Assert.AreEqual((byte)0, result[11]);            
         }
 
-        [Fact]
+        [Test]
         public void IgnoresNamedPropertyWhenSerializing()
         {
             BsonConfiguration.ForType<Skinny>(t => t.Ignore("Nint"));
 
             var result = Serializer.Serialize(new Skinny { Nint = 43, String = "abc" });
-            Assert.Equal(21, BitConverter.ToInt32(result, 0));
-            Assert.Equal((byte)'S', result[5]);
-            Assert.Equal((byte)'t', result[6]);
-            Assert.Equal((byte)'r', result[7]);
-            Assert.Equal((byte)'i', result[8]);
-            Assert.Equal((byte)'n', result[9]);
-            Assert.Equal((byte)'g', result[10]);
-            Assert.Equal((byte)0, result[11]);
+            Assert.AreEqual(21, BitConverter.ToInt32(result, 0));
+            Assert.AreEqual((byte)'S', result[5]);
+            Assert.AreEqual((byte)'t', result[6]);
+            Assert.AreEqual((byte)'r', result[7]);
+            Assert.AreEqual((byte)'i', result[8]);
+            Assert.AreEqual((byte)'n', result[9]);
+            Assert.AreEqual((byte)'g', result[10]);
+            Assert.AreEqual((byte)0, result[11]);
         }
         
-        [Fact]
+        [Test]
         public void IgnoresMultiplePropertyWhenSerializing()
         {
             BsonConfiguration.ForType<Skinny>(t =>
@@ -117,32 +117,32 @@ namespace Metsys.Bson.Tests
                 });
 
             var result = Serializer.Serialize(new Skinny { Nint = 43, String = "abc" });
-            Assert.Equal(5, BitConverter.ToInt32(result, 0));            
+            Assert.AreEqual(5, BitConverter.ToInt32(result, 0));            
         }
 
-        [Fact]
+        [Test]
         public void IgnoresPropertyWhenDeserializing()
         {
             BsonConfiguration.ForType<Skinny>(t => t.Ignore(p => p.Nint));
 
             var result = Serializer.Serialize(new { Nint = 43, String = "abc" });
             var o = Deserializer.Deserialize<Skinny>(result);
-            Assert.Equal(null, o.Nint);
-            Assert.Equal("abc", o.String);
+            Assert.AreEqual(null, o.Nint);
+            Assert.AreEqual("abc", o.String);
         }
 
-        [Fact]
+        [Test]
         public void IgnoresNamedPropertyWhenDeserializing()
         {
             BsonConfiguration.ForType<Skinny>(t => t.Ignore("Nint"));
 
             var result = Serializer.Serialize(new Skinny { Nint = 43, String = "abc" });
             var o = Deserializer.Deserialize<Skinny>(result);
-            Assert.Equal(null, o.Nint);
-            Assert.Equal("abc", o.String);
+            Assert.AreEqual(null, o.Nint);
+            Assert.AreEqual("abc", o.String);
         }
         
-        [Fact]
+        [Test]
         public void IgnoresMultiplePropertyWhenDeserializing()
         {
             BsonConfiguration.ForType<Skinny>(t =>
@@ -153,26 +153,27 @@ namespace Metsys.Bson.Tests
 
             var result = Serializer.Serialize(new { Nint = 43, String = "abc" });
             var o = Deserializer.Deserialize<Skinny>(result);
-            Assert.Equal(null, o.Nint);
-            Assert.Equal(null, o.String);
+            Assert.AreEqual(null, o.Nint);
+            Assert.AreEqual(null, o.String);
         }
 
-        [Fact]
+        [Test]
         public void IgnoresPropertyWhenSerializingAndNull()
         {
             BsonConfiguration.ForType<Skinny>(t => t.IgnoreIfNull(p => p.Nint));
 
             var result = Serializer.Serialize(new Skinny { String = "abc" });
-            Assert.Equal(21, BitConverter.ToInt32(result, 0));
-            Assert.Equal((byte)'S', result[5]);
-            Assert.Equal((byte)'t', result[6]);
-            Assert.Equal((byte)'r', result[7]);
-            Assert.Equal((byte)'i', result[8]);
-            Assert.Equal((byte)'n', result[9]);
-            Assert.Equal((byte)'g', result[10]);
-            Assert.Equal((byte)0, result[11]);   
+            Assert.AreEqual(21, BitConverter.ToInt32(result, 0));
+            Assert.AreEqual((byte)'S', result[5]);
+            Assert.AreEqual((byte)'t', result[6]);
+            Assert.AreEqual((byte)'r', result[7]);
+            Assert.AreEqual((byte)'i', result[8]);
+            Assert.AreEqual((byte)'n', result[9]);
+            Assert.AreEqual((byte)'g', result[10]);
+            Assert.AreEqual((byte)0, result[11]);   
         }
 
+		[TearDown]
         public void Dispose()
         {
             //this is all a horrible hack,someone fix it!
