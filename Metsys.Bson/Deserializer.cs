@@ -13,6 +13,7 @@ namespace Metsys.Bson
 		public class Options
 		{
 			public bool LongIntegers { get; set; }
+			public bool StringDates { get; set; }
 		}
 
         private readonly static IDictionary<Types, Type> _typeMap = new Dictionary<Types, Type>
@@ -132,7 +133,8 @@ namespace Metsys.Bson
             }
             if (type == typeof(DateTime))
             {
-                return Helper.Epoch.AddMilliseconds(ReadLong(Types.Int64));
+				var value = Helper.Epoch.AddMilliseconds(ReadLong(Types.Int64));
+				return options.StringDates ? value.ToString( "s", System.Globalization.CultureInfo.InvariantCulture ) : (object) value;
             }
             if (type == typeof(ObjectId))
             {

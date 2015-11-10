@@ -40,11 +40,14 @@ namespace Metsys.Bson.Tests
 		[Test]
 		public void UseLongIntegers()
 		{
+			var now = new DateTime( 2000, 1, 1, 12, 34, 56, DateTimeKind.Utc );
+
 			var dico = new Dictionary<string, object> {
 				{ "int32", (int) 123 },
 				{ "long", (long) 123L },
 				{ "float", 123.45f },
 				{ "double", 123.45d },
+				{ "date", now },
 			};
 
 			var serialized = Serializer.Serialize( dico );
@@ -54,13 +57,17 @@ namespace Metsys.Bson.Tests
 			Assert.IsTrue( deserialized["long"] is long );
 			Assert.IsTrue( deserialized["float"] is double );
 			Assert.IsTrue( deserialized["double"] is double );
+			Assert.IsTrue( deserialized["date"] is DateTime );
+			Assert.AreEqual( now, deserialized["date"] );
 
-			deserialized = Deserializer.Deserialize<Dictionary<string, object>>( serialized, new Deserializer.Options{ LongIntegers = true } );
+			deserialized = Deserializer.Deserialize<Dictionary<string, object>>( serialized, new Deserializer.Options{ LongIntegers = true, StringDates = true } );
 
 			Assert.IsTrue( deserialized["int32"] is long );
 			Assert.IsTrue( deserialized["long"] is long );
 			Assert.IsTrue( deserialized["float"] is double );
 			Assert.IsTrue( deserialized["double"] is double );
+			Assert.IsTrue( deserialized["date"] is string );
+			Assert.AreEqual( now, DateTime.Parse( (string) deserialized["date"] ) );
 		}
 
 		[TearDown]
