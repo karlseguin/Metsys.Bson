@@ -60,13 +60,21 @@ namespace Metsys.Bson.Tests
             Assert.AreEqual(array, o.ByteArray);
         }
         [Test]
-        public void DeserializesADateTime()
+        public void DeserializesAUTCDateTime()
         {
-            var date = new DateTime(2001, 4, 8, 10, 43, 23, 104);
+            var date = new DateTime(2001, 4, 8, 10, 43, 23, 104, DateTimeKind.Utc);
             var input = Serializer.Serialize(new { DateTime = date });
             var o = Deserializer.Deserialize<Fatty>(input);
-            Assert.AreEqual(date, o.DateTime);
+			Assert.AreEqual(date, o.DateTime);
         }
+		[Test]
+		public void DeserializesALocalDateTime()
+		{
+			var date = new DateTime(2001, 4, 8, 10, 43, 23, 104, DateTimeKind.Local);
+			var input = Serializer.Serialize(new { DateTime = date });
+			var o = Deserializer.Deserialize<Fatty>(input);
+			Assert.AreEqual(date, o.DateTime.ToLocalTime());
+		}
         [Test]
         public void DeserializesARegex()
         {

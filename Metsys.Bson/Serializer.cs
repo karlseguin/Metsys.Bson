@@ -166,7 +166,7 @@ namespace Metsys.Bson
                     return;
                 case Types.DateTime:
                     Written(8);
-                    _writer.Write((long)((DateTime)value).Subtract(Helper.Epoch).TotalMilliseconds);
+					_writer.Write((long)((DateTime)value).ToUniversalTime().Subtract(Helper.Epoch).TotalMilliseconds);
                     return;
                 case Types.Binary:
                     WriteBinnary(value);

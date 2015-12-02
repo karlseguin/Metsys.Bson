@@ -54,14 +54,23 @@ namespace Metsys.Bson.Tests
             Assert.AreEqual(long.MinValue, BitConverter.ToInt64(result, 10));
         }
         [Test]
-        public void SerializesADateTime()
+        public void SerializesAUTCDateTime()
         {
-            var date = new DateTime(2004, 4, 9, 10, 43, 23, 55);
+            var date = new DateTime(2004, 4, 9, 10, 43, 23, 55, DateTimeKind.Utc);
             var result = Serializer.Serialize(new { Name = date });
             Assert.AreEqual(19, BitConverter.ToInt32(result, 0)); //length
             Assert.AreEqual(9, result[4]); //type
-            Assert.AreEqual((long)date.Subtract(Helper.Epoch).TotalMilliseconds, BitConverter.ToInt64(result, 10));
+			Assert.AreEqual((long)date.Subtract(Helper.Epoch).TotalMilliseconds, BitConverter.ToInt64(result, 10));
         }             
+		[Test]
+		public void SerializesALocalDateTime()
+		{
+			var date = new DateTime(2004, 4, 9, 10, 43, 23, 55, DateTimeKind.Local);
+			var result = Serializer.Serialize(new { Name = date });
+			Assert.AreEqual(19, BitConverter.ToInt32(result, 0)); //length
+			Assert.AreEqual(9, result[4]); //type
+			Assert.AreEqual((long)date.ToUniversalTime().Subtract(Helper.Epoch).TotalMilliseconds, BitConverter.ToInt64(result, 10));
+		}             
         [Test]
         public void SeralizesAFloatAsDouble()
         {
