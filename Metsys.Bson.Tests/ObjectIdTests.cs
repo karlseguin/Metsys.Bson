@@ -1,76 +1,76 @@
-using Xunit;
+using NUnit.Framework;
 
 namespace Metsys.Bson.Tests
 {
     public class ObjectIdTests
     {
-        [Fact]
+        [Test]
         public void TryParseReturnsFalseIfObjectIdIsNull()
         {
             ObjectId objectId;
-            Assert.Equal(false, ObjectId.TryParse(null, out objectId));
+            Assert.AreEqual(false, ObjectId.TryParse(null, out objectId));
         }
-        [Fact]
+        [Test]
         public void TryParseReturnsFalseIfObjectIdIsEmpty()
         {
             ObjectId objectId;
-            Assert.Equal(false, ObjectId.TryParse(string.Empty, out objectId));
+            Assert.AreEqual(false, ObjectId.TryParse(string.Empty, out objectId));
         }
-        [Fact]
+        [Test]
         public void TryParseReturnsFalseIfObjectIdIsnt24Characters()
         {
             ObjectId objectId;
-            Assert.Equal(false, ObjectId.TryParse("a", out objectId));
-            Assert.Equal(false, ObjectId.TryParse(new string('b', 23), out objectId));
-            Assert.Equal(false, ObjectId.TryParse(new string('b', 25), out objectId));
+            Assert.AreEqual(false, ObjectId.TryParse("a", out objectId));
+            Assert.AreEqual(false, ObjectId.TryParse(new string('b', 23), out objectId));
+            Assert.AreEqual(false, ObjectId.TryParse(new string('b', 25), out objectId));
         }
-        [Fact]
+        [Test]
         public void TryParseReturnsFalseIfObjectIdIsinvalid()
         {
             ObjectId objectId;
-            Assert.Equal(false, ObjectId.TryParse(new string('*', 24), out objectId));
-            Assert.Equal(false, ObjectId.TryParse(new string('1', 23) + '-', out objectId));
+            Assert.AreEqual(false, ObjectId.TryParse(new string('*', 24), out objectId));
+            Assert.AreEqual(false, ObjectId.TryParse(new string('1', 23) + '-', out objectId));
         }
-        [Fact]
+        [Test]
         public void ReturnsParsedObjectId()
         {
             ObjectId objectId;
-            Assert.Equal(true, ObjectId.TryParse("4b883faad657000000002665", out objectId));
-            Assert.NotEqual(ObjectId.Empty, objectId);
-            Assert.Equal(true, ObjectId.TryParse("1234567890abcdef123456ab", out objectId));
-            Assert.NotEqual(ObjectId.Empty, objectId);
-            Assert.Equal(true, ObjectId.TryParse("1234567890abCDEf123456ab", out objectId));
-            Assert.NotEqual(ObjectId.Empty, objectId);
+            Assert.AreEqual(true, ObjectId.TryParse("4b883faad657000000002665", out objectId));
+            Assert.AreNotEqual(ObjectId.Empty, objectId);
+            Assert.AreEqual(true, ObjectId.TryParse("1234567890abcdef123456ab", out objectId));
+            Assert.AreNotEqual(ObjectId.Empty, objectId);
+            Assert.AreEqual(true, ObjectId.TryParse("1234567890abCDEf123456ab", out objectId));
+            Assert.AreNotEqual(ObjectId.Empty, objectId);
         }
-        [Fact]
+        [Test]
         public void ObjectIdWithSameValueAreEqual()
         {
             var a = new ObjectId("4b883faad657000000002665");
             var b = new ObjectId("4b883faad657000000002665");
-            Assert.Equal(a, b);
+            Assert.AreEqual(a, b);
             Assert.True(a == b);
         }
-        [Fact]
+        [Test]
         public void ObjectIdWithDifferentValuesAreNotEqual()
         {
             var a = new ObjectId("4b883faad657000000002665");
             var b = new ObjectId("4b883faad657000000002666");
-            Assert.NotEqual(a, b);
+            Assert.AreNotEqual(a, b);
             Assert.True(a != b);
         }
-        [Fact]
+        [Test]
         public void ImplicitConversionOfObjectIdToAndFromStringWorks()
         {
             var oid = ObjectId.NewObjectId();
             string str = oid;
-            Assert.Equal(oid, (ObjectId)str);
+            Assert.AreEqual(oid, (ObjectId)str);
         }
         
-        [Fact]
+        [Test]
         public void ConversionToStringWithNullObjIsNull()
         {
             var obj = new { Id = (ObjectId)null };            
-            Assert.Equal(null, obj.Id);
+            Assert.AreEqual(null, obj.Id);
         }
     }
 }

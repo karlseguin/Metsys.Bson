@@ -32,9 +32,11 @@ namespace Metsys.Bson
         public static byte[] Serialize<T>(T document)
         {
             var type = document.GetType();
-            if (type.IsValueType || typeof(IEnumerable).IsAssignableFrom(type))
+			if (type.IsValueType ||
+				( typeof(IEnumerable).IsAssignableFrom(type) && typeof(IDictionary).IsAssignableFrom(type) == false )
+			)
             {
-               throw new BsonException("Root type must be an non-enumerable object");
+               throw new BsonException("Root type must be an object");
             }
             using (var ms = new MemoryStream(250))
             using (var writer = new BinaryWriter(ms))
@@ -87,6 +89,13 @@ namespace Metsys.Bson
  
         private void WriteObject(object document)
         {
+			var asDictionary = document as IDictionary;
+			if ( asDictionary != null )
+			{
+				Write( asDictionary );
+				return;
+			}
+
             var typeHelper = TypeHelper.GetHelperForType(document.GetType());
             foreach (var property in typeHelper.GetProperties())
             {
@@ -157,7 +166,7 @@ namespace Metsys.Bson
                     return;
                 case Types.DateTime:
                     Written(8);
-                    _writer.Write((long)((DateTime)value).Subtract(Helper.Epoch).TotalMilliseconds);
+					_writer.Write((long)((DateTime)value).ToUniversalTime().Subtract(Helper.Epoch).TotalMilliseconds);
                     return;
                 case Types.Binary:
                     WriteBinnary(value);
